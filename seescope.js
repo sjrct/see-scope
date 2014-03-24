@@ -30,9 +30,13 @@ function find_text(elm) {
 }
 
 function next_word(l, m, r) {
-	l.innerHTML = text[texti].slice(0, textj);
-	m.innerHTML = text[texti][textj];
-	r.innerHTML = text[texti].slice(textj + 1);
+	good = !!text[texti][textj].match(/[a-z]/);
+
+	if (good) {
+		l.innerHTML = text[texti].slice(0, textj).join('');
+		m.innerHTML = text[texti][textj];
+		r.innerHTML = text[texti].slice(textj + 1).join('');
+	}
 
 	textj++;
 	if (textj >= text[texti].length) {
@@ -42,6 +46,10 @@ function next_word(l, m, r) {
 		if (texti >= text.length) {
 			//TODO
 		}
+	}
+
+	if (!good) {
+		next_word();
 	}
 }
 
@@ -57,12 +65,11 @@ if (typeof see_scope === 'undefined') {
 	// construct the html tags
 	see_scope.topd = make('div', document.body, 'see-scope-top');
 	var modal      = make('div', see_scope.topd, 'see-scope-modal');
-	var content    = make('div', modal, 'see-scope-content');
+	var bound      = make('div', modal, 'see-scope-bound');
+	var content    = make('div', bound, 'see-scope-content');
 	var left  = make('span', content, 'see-scope-left');
-	var mid   = make('span', content, 'see-scope-mid');
+	var mid   = make('span', content, 'see-scope-focus');
 	var right = make('span', content, 'see-scope-right');
-
-	next_word(left, mid, right);
 
 	// set event listeners
 	see_scope.topd.onclick = function() {
@@ -72,6 +79,13 @@ if (typeof see_scope === 'undefined') {
 	modal.onclick = function (e) {
 		e.stopPropagation();
 	};
+
+	// handle moving the word focus
+	var wpm = 350;
+	next_word(left, mid, right);
+	setInterval(function() {
+		next_word(left, mid, right);
+	}, 60000/wpm);
 } else {
 	// every click after first
 	see_scope.topd.style.display = 'block';

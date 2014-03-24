@@ -19,3 +19,21 @@
 	corner-shape: bevel;
 	border-radius: 15px;
 }
+
+#see-scope-bound {
+	position: relative;
+	top: 2%;
+	left: 2%;
+	width: 96%;
+	height: 96%;
+}
+
+#see-scope-focus {
+	color: #f00 !important;
+}
+
+#see-scope-content span {
+	font-size: 16px;
+	font-family: Helvetica,Arial,sans;
+	color: #000;
+}
